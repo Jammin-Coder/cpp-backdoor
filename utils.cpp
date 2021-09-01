@@ -6,7 +6,7 @@
 #include <array>
 
 
-std::string get_cmd_output(std::string command)
+std::string cmd_output(std::string command)
 {
 	/*
 	This function is credited to Stack-overflow user John Smith.

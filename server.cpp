@@ -19,6 +19,9 @@ void log(T mess)
     std::cout << mess << std::endl;
 }
 
+int PORT = 54000;
+const char* IP = "0.0.0.0";
+
 int main()
 {
     // Create socket
@@ -32,8 +35,8 @@ int main()
     // Bind socket to port / IP
     sockaddr_in hint;
     hint.sin_family = AF_INET;
-    hint.sin_port = htons(54000);
-    inet_pton(AF_INET, "0.0.0.0", (sockaddr*)&hint.sin_addr);
+    hint.sin_port = htons(PORT);
+    inet_pton(AF_INET, IP, (sockaddr*)&hint.sin_addr);
     
     if (bind(listening, (sockaddr*)&hint, sizeof(hint)) == -1)
     {
@@ -47,6 +50,7 @@ int main()
         return -3;
     }
     
+    
     /*********************  LET CLIENT CONNECT  *********************/
     
     // Accept call
@@ -56,6 +60,7 @@ int main()
     char srv[NI_MAXSERV];
     
     // The program halts here and waits for a client to connect
+    std::cout << "[+] Listening on " << IP << " on port " << PORT << std::endl; 
     int clientSocket = accept(listening, (sockaddr*)&client, &clientSize);
     
     // Something went wrong.

